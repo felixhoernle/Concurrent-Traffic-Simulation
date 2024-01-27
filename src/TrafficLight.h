@@ -20,8 +20,8 @@ template <class T>
 class MessageQueue
 {
 public:
-    void MessageQueue<T>::send(T &&msg);
-    T MessageQueue<T>::receive();
+    void send(T &&msg);
+    T receive();
 
 private:
     std::deque<T> _queue;
@@ -40,6 +40,7 @@ class TrafficLight : public TrafficObject
 {
 public:
     // constructor / desctructor
+    TrafficLight();
 
     // getters / setters
     TrafficLightPhase getCurrentPhase();
@@ -51,7 +52,7 @@ public:
 
 private:
     // typical behaviour methods
-    void cycleThroughPhases() {}
+    void cycleThroughPhases();
 
     // FP.4b : create a private member of type MessageQueue for messages of type TrafficLightPhase 
     // and use it within the infinite loop to push each new TrafficLightPhase into it by calling 
