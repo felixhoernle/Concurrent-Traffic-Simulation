@@ -17,9 +17,9 @@ T MessageQueue<T>::receive()
     std::unique_lock<std::mutex> uLock(_mutex);
     _condition.wait(uLock, [this] { return !_queue.empty(); }); // pass unique lock to condition variable
 
-    // remove last last message from queue
+    // return last message from queue and flush queue
     T msg = std::move(_queue.back());
-    _queue.pop_back();
+    _queue.clear();
 
     return msg; // will not be copied due to return value optimization (RVO) in C++
 }
@@ -34,7 +34,7 @@ void MessageQueue<T>::send(T &&msg)
     std::lock_guard<std::mutex> uLock(_mutex);
 
     // add message to queue
-    _queue.push_back(std::move(msg));
+    _queue.emplace_back(std::move(msg));
     _condition.notify_one(); // notify client after pushing new message into vector
 }
 
